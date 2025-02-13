@@ -1,28 +1,21 @@
-# змінні
-$downloadUrl = "https://github.com/edinichka/autodeploy-rdp-custom-port/raw/refs/heads/main/BFGuard.ps1"
-$scriptPath = "C:\Scripts\BFGuard.ps1"           # Шлях до скрипта
-$taskName = "AutoBlockBruteForce"
+# variables
+$downloadScript = "https://github.com/edinichka/autodeploy-rdp-custom-port/raw/refs/heads/main/BFGuard.ps1"
+$downloadTask = "https://github.com/edinichka/autodeploy-rdp-custom-port/raw/refs/heads/main/BFGuardTask.xml"
+$scriptPath = "C:\BFGuard\BFGuard.ps1"
+$taskPath = "C:\BFGuard\BFGuardTask.xml"
 
-# створити директорію
+# create dir
 if (!(Test-Path "C:\Scripts")) {
-    New-Item -ItemType Directory -Path "C:\Scripts"
+    New-Item -ItemType Directory -Path "C:\BFGuard"
 }
 
-# завантажити скрипт
-Invoke-WebRequest -Uri $downloadUrl -OutFile $scriptPath
+# download script
+Invoke-WebRequest -Uri $downloadScript -OutFile $scriptPath
+Invoke-WebRequest -Uri $downloadTask -OutFile $taskPath
 
-# створити дію
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ExecutionPolicy Bypass -File `"$scriptPath`""
-
-# створити тригер для запуску кожні 10 хвилин, починаючи з поточного часу
-$trigger = New-ScheduledTaskTrigger -At (Get-Date).AddMinutes(1)
-$trigger.RepetitionInterval = New-TimeSpan -Minutes 10
-$trigger.RepetitionDuration = New-TimeSpan -Days 3650
-
-# налаштування (без AllowHardTerminate)
-$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -RunOnlyIfNetworkAvailable -DontStopOnIdleEnd -MultipleInstances IgnoreNew
-
-# зареєструвати заплановану задачу
-Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -RunLevel Highest -Force
-
-Write-Output "Задача $taskName успішно створена, скрипт був завантажений і розгорнутий за адресою $scriptPath"
+#deploy task and run it
+#additionally clear security events in case of random blocks
+Clear-EventLog -LogName Security
+schtasks /create /tn "BFGuardTask" /xml $taskPath /f
+Start-Sleep -Seconds 5
+Start-ScheduledTask -TaskName "BFGuardTask"
