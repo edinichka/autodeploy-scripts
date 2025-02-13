@@ -2,21 +2,18 @@
 <Task version="1.4" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
   <RegistrationInfo>
     <Date>2025-02-13T23:20:05</Date>
-    <Author>BKZ6C1GSFEQ0CIL\Администратор</Author>
+    <Author>BKZ6C1GSFEQ0CIL\ÐÐ´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð°Ñ‚Ð¾Ñ€</Author>
     <URI>\BFGuardTask</URI>
   </RegistrationInfo>
   <Triggers>
-    <CalendarTrigger>
+    <EventTrigger>
       <Repetition>
-        <Interval>PT10M</Interval>
+        <Interval>PT5M</Interval>
         <StopAtDurationEnd>false</StopAtDurationEnd>
       </Repetition>
-      <StartBoundary>2025-02-13T12:00:00+01:00</StartBoundary>
       <Enabled>true</Enabled>
-      <ScheduleByDay>
-        <DaysInterval>1</DaysInterval>
-      </ScheduleByDay>
-    </CalendarTrigger>
+      <Subscription>&lt;QueryList&gt;&lt;Query Id="0" Path="Security"&gt;&lt;Select Path="Security"&gt;*[System[Provider[@Name='Microsoft-Windows-Security-Auditing'] and EventID=4625]]&lt;/Select&gt;&lt;/Query&gt;&lt;/QueryList&gt;</Subscription>
+    </EventTrigger>
   </Triggers>
   <Principals>
     <Principal id="Author">
