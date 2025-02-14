@@ -1,6 +1,6 @@
 # variables
-$downloadScript = "https://github.com/edinichka/autodeploy-rdp-custom-port/raw/refs/heads/main/BFGuard.ps1"
-$downloadTask = "https://github.com/edinichka/autodeploy-rdp-custom-port/raw/refs/heads/main/BFGuardTask.xml"
+$downloadScript = "https://github.com/edinichka/autodeploy-scripts/raw/refs/heads/main/BFGuard.ps1"
+$downloadTask = "https://github.com/edinichka/autodeploy-scripts/raw/refs/heads/main/BFGuardTask.xml"
 $scriptPath = "C:\BFGuard\BFGuard.ps1"
 $taskPath = "C:\BFGuard\BFGuardTask.xml"
 
